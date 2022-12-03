@@ -88,4 +88,4 @@ const ProductTable = () => {
   );
 };
 
-export default Producttable;
+export default ProductTable;
