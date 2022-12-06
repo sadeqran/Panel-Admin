@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PaginatedDataTable from "../../components/PaginatedDataTable";
 import {
   deleteProductService,
   getProductsService,
 } from "../../services/products";
 import { Alert, Confirm } from "../../utils/alerts";
-import AddProduct from "./AddProduct";
 import Actions from "./tableAddition/Actions";
+import AddButtonLink from "../../components/AddButtonLink";
 
 const TableProduct = () => {
   const [data, setData] = useState([]);
@@ -79,7 +78,7 @@ const TableProduct = () => {
       pageCount={pageCount}
       handleSearch={handleSearch}
     >
-      <AddProduct />
+      <AddButtonLink href={"/products/add-product"} />
     </PaginatedDataTable>
   );
 };
