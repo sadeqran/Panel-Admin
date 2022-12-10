@@ -1,25 +1,42 @@
 import * as Yup from "yup";
+import {
+  createNewProductService,
+  editProductService,
+} from "../../services/products";
+import { Alert } from "../../utils/alerts";
 
 export const initialValues = {
   category_ids: "",
   title: "",
   price: "",
-  weight: null,
-  brand_id: null,
+  weight: "",
+  brand_id: "",
   color_ids: "",
   guarantee_ids: "",
   descriptions: "",
   short_descriptions: "",
   cart_descriptions: "",
-  image: null,
+  image: "",
   alt_image: "",
   keywords: "",
-  stock: null,
-  discount: null,
+  stock: "",
+  discount: "",
 };
 
-export const onSubmit = async (values, actions) => {};
-
+export const onSubmit = async (values, actions, productToEdit) => {
+  console.log(values);
+  if (productToEdit) {
+    const res = await editProductService(productToEdit.id, values);
+    if (res.status === 200) {
+      Alert("انجام شد", res.data.message, "success");
+    }
+  } else {
+    const res = await createNewProductService(values);
+    if (res.status === 201) {
+      Alert("انجام شد", res.data.message, "success");
+    }
+  }
+};
 export const validationSchema = Yup.object({
   category_ids: Yup.string()
     .required("لطفا این قسمت را پر کنید")
@@ -58,7 +75,7 @@ export const validationSchema = Yup.object({
       !value ? true : value.size <= 500 * 1024
     )
     .test("format", "فرمت فایل باید jpg باشد", (value) =>
-      !value ? true : value.type === "image/jpeg"
+      !value ? true : value.type === "image/jpeg" || value.type === "image/png"
     ),
   alt_image: Yup.string().matches(
     /^[\u0600-\u06FF\sa-zA-Z0-9@!%-.$?&]+$/,
