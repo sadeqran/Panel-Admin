@@ -86,29 +86,26 @@ const AddProduct = () => {
       );
     }
   };
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     getAllParentCategories();
     getAllBrands();
     getAllColors();
     getAllGuarantees();
 
-    setInitialSelectedValues()
+    setInitialSelectedValues();
     for (const key in productToEdit) {
-      if (productToEdit[key] === null) productToEdit[key] = ""
+      if (productToEdit[key] === null) productToEdit[key] = "";
     }
-    if (productToEdit) 
+    if (productToEdit)
       setReInitialValues({
         ...productToEdit,
-        category_ids: productToEdit.categories.map(c=>c.id).join("-"),
-        color_ids: productToEdit.colors.map(c=>c.id).join("-"),
-        guarantee_ids: productToEdit.guarantees.map(g=>g.id).join("-"),
+        category_ids: productToEdit.categories.map((c) => c.id).join("-"),
+        color_ids: productToEdit.colors.map((c) => c.id).join("-"),
+        guarantee_ids: productToEdit.guarantees.map((g) => g.id).join("-"),
       });
-    else setReInitialValues(null)
-
-  },[])
-
-
+    else setReInitialValues(null);
+  }, []);
 
   const handleSetMainCategories = async (value) => {
     setMainCategories("waiting");
@@ -236,10 +233,18 @@ const AddProduct = () => {
                   initialItems={selectedGuarantees}
                 />
 
+                {/* <FormikControl
+                    label="توضیحات"
+                    className="col-md-6 col-lg-8"
+                    control="textarea"
+                    name="descriptions"
+                    placeholder="فقط از حروف واعداد استفاده شود"
+                  /> */}
+
                 <FormikControl
                   label="توضیحات"
                   className="col-md-6 col-lg-8"
-                  control="textarea"
+                  control="ckeditor"
                   name="descriptions"
                   placeholder="فقط از حروف واعداد استفاده شود"
                 />
