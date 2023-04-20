@@ -1,4 +1,4 @@
-import { Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -6,46 +6,52 @@ import { useLocation } from "react-router-dom";
 import SubmitButton from "../../../components/form/SubmitButton";
 import PrevPageButton from "../../../components/PrevButton";
 import SpinnerLoad from "../../../components/SpinnerLoad";
-import { getCategoryAttrsService } from "../../../services/categoryAttr";
+import * as Yup from "yup";
+import { initializingData, onSubmit } from "./core";
+import FormikError from "../../../components/form/FormikError";
 
 const SetAttribute = () => {
   const location = useLocation();
   const { selectedProduct } = location.state;
 
   const [attrs, setAttrs] = useState();
+  const [initialValues, setInitialValues] = useState(null);
+  const [validationSchema, setValidationSchema] = useState({});
 
   const handleGetAttributes = async () => {
-    Promise.all(
-      selectedProduct.categories.map(async (cat) => {
-        const res = await getCategoryAttrsService(cat.id);
-        if (res.status === 200) {
-          setAttrs((oldAttr) => {
-            return oldAttr
-              ? [...oldAttr, { groupTitle: cat.title, data: res.data.data }]
-              : [{ groupTitle: cat.title, data: res.data.data }];
-          });
-        }
-      })
+    const { attrsVar, initials, rules } = await initializingData(
+      selectedProduct
+    );
+    setAttrs(attrsVar);
+    setInitialValues(initials);
+    setValidationSchema(
+      Object.keys(initials).length > 0 ? Yup.object(rules) : {}
     );
   };
   useEffect(() => {
     handleGetAttributes();
   });
   return (
-    <Formik>
-      <Form>
-        <div className="container">
-          <h4 className="text-center my-3">
-            {" "}
-            افزودن ویژگی محصول:{" "}
-            <span className="text-primary">{selectedProduct.title}</span>{" "}
-          </h4>
-          <div className="text-left col-md-6 col-lg-8 m-auto my-3">
-            <PrevPageButton />
-          </div>
-          <div className="row justify-content-center">
-            {attrs ? (
-              attrs.map((attr, index) => (
+    <div className="container">
+      <h4 className="text-center my-3">
+        {" "}
+        افزودن ویژگی محصول:{" "}
+        <span className="text-primary">{selectedProduct.title}</span>{" "}
+      </h4>
+      <div className="text-left col-md-6 col-lg-8 m-auto my-3">
+        <PrevPageButton />
+      </div>
+      <div className="row justify-content-center">
+        {initialValues ? (
+          <Formik
+            initialValues={initialValues}
+            onSubmit={(values, actions) =>
+              onSubmit(values, actions, selectedProduct.id)
+            }
+            validationSchema={validationSchema}
+          >
+            <Form>
+              {attrs.map((attr, index) => (
                 <div
                   key={"group" + index}
                   className="row justify-content-center"
@@ -62,7 +68,8 @@ const SetAttribute = () => {
                             {" "}
                             {attrData.unit}{" "}
                           </span>
-                          <input
+                          <Field
+                            name={attrData.id}
                             type="text"
                             className="form-control"
                             placeholder=""
@@ -71,6 +78,10 @@ const SetAttribute = () => {
                             {attrData.title}
                           </span>
                         </div>
+                        <ErrorMessage
+                          name={attrData.id}
+                          component={FormikError}
+                        />
                       </div>
                     ))
                   ) : (
@@ -79,19 +90,19 @@ const SetAttribute = () => {
                     </small>
                   )}
                 </div>
-              ))
-            ) : (
-              <SpinnerLoad />
-            )}
+              ))}
 
-            <div className="btn_box text-center col-12 col-md-6 col-lg-8 mt-4">
-              <SubmitButton />
-              <PrevPageButton className="me-2" />
-            </div>
-          </div>
-        </div>
-      </Form>
-    </Formik>
+              <div className="btn_box text-center col-12 col-md-6 col-lg-8 mt-4 m-auto">
+                <SubmitButton />
+                <PrevPageButton className="me-2" />
+              </div>
+            </Form>
+          </Formik>
+        ) : (
+          <SpinnerLoad />
+        )}
+      </div>
+    </div>
   );
 };
 

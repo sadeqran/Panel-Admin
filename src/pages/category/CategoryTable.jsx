@@ -49,17 +49,15 @@ const Categorytable = () => {
     { field: "id", title: "#" },
     { field: "title", title: "عنوان محصول" },
     { field: "parent_id", title: "والد" },
-  ];
-  const additionField = [
-    {
+    {field:null,
       title: "تاریخ",
       elements: (rowData) => convertDateToJalali(rowData.created_at),
     },
-    {
+    {field:null,
       title: "نمایش در منو",
       elements: (rowData) => <ShowInMenu rowData={rowData} />,
     },
-    {
+    {field:null,
       title: "عملیات",
       elements: (rowData) => (
         <Actions
@@ -69,6 +67,7 @@ const Categorytable = () => {
       ),
     },
   ];
+  
   const searchParams = {
     title: "جستجو",
     placeholder: "قسمتی از عنوان را وارد کنید",
@@ -80,7 +79,6 @@ const Categorytable = () => {
       <PaginatedTable
         data={data}
         dataInfo={dataInfo}
-        additionField={additionField}
         numOfPAge={8}
         searchParams={searchParams}
         loading={loading}
