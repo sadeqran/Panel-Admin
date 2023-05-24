@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Leftcontent = () => {
+  const user = useSelector((state) => state.userReducer.data);
   return (
     <div className="left_content d-flex flex-row-reverse">
       <i
@@ -16,7 +18,7 @@ const Leftcontent = () => {
       >
         <li className="my-2">
           <a className="dropdown-item d-block text-center" href="/">
-            صادق رنجبر
+            {user.full_name || user.user_name}
           </a>
         </li>
         <li className="my-2 d-flex justify-content-center align-items-center px-2">
@@ -42,7 +44,7 @@ const Leftcontent = () => {
           <i className="fas fa-power-off"></i>
           <Link to={"/logout"} className="dropdown-item">
             خروج
-          </Link >
+          </Link>
         </li>
       </ul>
       <i className="far fa-bell fa-2x mx-3 pointer position-relative">

@@ -7,6 +7,7 @@ import {
 import { Alert, Confirm } from "../../utils/alerts";
 import Actions from "./tableAddition/Actions";
 import AddButtonLink from "../../components/AddButtonLink";
+import { useHasPermission } from "../../hook/permissionsHook";
 
 const TableProduct = () => {
   const [data, setData] = useState([]);
@@ -15,6 +16,7 @@ const TableProduct = () => {
   const [currentPage, setCurrentPage] = useState(1); // صفحه حال حاضر
   const [countOnPage, setCountOnPage] = useState(10); // تعداد محصول در هر صفحه
   const [pageCount, setPageCount] = useState(0); // تعداد کل صفحات
+  const hasAddProductPerm = useHasPermission("create_product");
 
   const dataInfo = [
     { field: "id", title: "#" },
@@ -26,7 +28,9 @@ const TableProduct = () => {
     {
       field: null,
       title: "توضیحات محصول",
-      elements: (rowData) => <span dangerouslySetInnerHTML={{__html: rowData.descriptions}}></span>,
+      elements: (rowData) => (
+        <span dangerouslySetInnerHTML={{ __html: rowData.descriptions }}></span>
+      ),
     },
     { field: "title", title: "عنوان" },
     { field: "price", title: "قیمت" },
@@ -83,7 +87,7 @@ const TableProduct = () => {
       pageCount={pageCount}
       handleSearch={handleSearch}
     >
-      <AddButtonLink href={"/products/add-product"} />
+      {hasAddProductPerm && <AddButtonLink href={"/products/add-product"} />}
     </PaginatedDataTable>
   );
 };

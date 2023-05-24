@@ -21,6 +21,11 @@ a {
   text-decoration: none !important;
 }
 
+.sidebar_items_container{
+  max-height: calc(100vh - 210px) !important;
+  overflow: auto;
+}
+
 .back_smoke{
   background-color: rgba(0,0,0,0.46)!important;
 }
@@ -367,6 +372,7 @@ th {
 
 #sidebar_section .mini_sidebar .avatar_box {
   width: 55px;
+  height: 55px;
 }
 
 #sidebar_section .mini_sidebar .avatar_box img {

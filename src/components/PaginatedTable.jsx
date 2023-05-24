@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SpinnerLoad from "./SpinnerLoad";
+
 const PaginatedTable = ({
   children,
   data,
@@ -67,16 +68,16 @@ const PaginatedTable = ({
           <tbody>
             {tableData.map((d) => (
               <tr key={d.id}>
-              {dataInfo.map((i, index) =>
-                i.field ? (
-                  <td key={i.field + "_" + d.id}>{d[i.field]}</td>
-                ) : (
-                  <td key={d.id + "__" + i.id + "__" + index}>
-                    {i.elements(d)}
-                  </td>
-                )
-              )}
-            </tr>
+                {dataInfo.map((i, index) =>
+                  i.field ? (
+                    <td key={i.field + "_" + d.id}>{d[i.field]}</td>
+                  ) : (
+                    <td key={d.id + "__" + i.id + "__" + index}>
+                      {i.elements(d)}
+                    </td>
+                  )
+                )}
+              </tr>
             ))}
           </tbody>
         </table>

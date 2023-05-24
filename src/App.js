@@ -1,20 +1,19 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import AdminLayout from './layouts/admin/Index';
-import AuthLayout from './layouts/authLayout/AuthLAyout';
+import React from "react";
+import { Provider } from "react-redux";
+import { useLocation } from "react-router-dom";
+import AdminLayout from "./layouts/admin/Index";
+import AuthLayout from "./layouts/authLayout/AuthLAyout";
+import store from "./redux/store";
 
 function App() {
-  const location = useLocation()
+  const location = useLocation();
   return (
-    <div className="App">
-      {
-        location.pathname.includes('/auth') ? (
-          <AuthLayout/>
-        ) : (
-          <AdminLayout/>
-        )
-      }
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        {location.pathname.includes("/auth") ? <AuthLayout /> : <AdminLayout />}
+      </div>
+    </Provider>
   );
 }
+
 export default App;

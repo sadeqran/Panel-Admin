@@ -21,7 +21,7 @@ const months = [
   { id: 12, value: "اسفند" },
 ];
 
-const Date = ({ formik, name, label, yearsLimit }) => {
+const Date = ({ formik, name, label, yearsLimit, initialDate, className }) => {
   const [day, setDay] = useState();
   const [month, setMonth] = useState();
   const [year, setYear] = useState();
@@ -29,7 +29,7 @@ const Date = ({ formik, name, label, yearsLimit }) => {
   const [showConfig, setShowConfig] = useState(false);
 
   useEffect(() => {
-    let now = jMoment();
+    let now = jMoment(initialDate);
     setDay(now.jDate());
     setMonth(now.jMonth() + 1);
     setYear(now.jYear());
@@ -58,7 +58,8 @@ const Date = ({ formik, name, label, yearsLimit }) => {
   };
 
   return (
-    <div className={`wrap-input100 validate-input form_date_picker`}>
+    <div className={`validate-input form_date_picker ${className}`}>
+      {" "}
       <div
         className="input-group mb-3 dir_ltr pointer"
         onClick={handleShowDateConfig}
@@ -75,7 +76,6 @@ const Date = ({ formik, name, label, yearsLimit }) => {
           {label}{" "}
         </span>
       </div>
-
       {showConfig ? (
         <div className="datePicker row w-100 m-0 p-0">
           <div className="col-3 d-flex justify-content-center align-items-center  p-0">

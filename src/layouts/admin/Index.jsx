@@ -24,4 +24,5 @@ const Index = () => {
     </AdminContextContainer>
   );
 };
+
 export default Index;
