@@ -102,7 +102,7 @@ const AddProduct = () => {
         ...productToEdit,
         category_ids: productToEdit.categories.map((c) => c.id).join("-"),
         color_ids: productToEdit.colors.map((c) => c.id).join("-"),
-        guarantee_ids: productToEdit.guarantees.map((g) => g.id).join("-"),
+        guarantee_ids: productToEdit.guarantees.map((g) => g.id).join("-"),image: ""
       });
     else setReInitialValues(null);
   }, []);

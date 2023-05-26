@@ -21,7 +21,15 @@ const months = [
   { id: 12, value: "اسفند" },
 ];
 
-const Date = ({ formik, name, label, yearsLimit, initialDate, className }) => {
+const Date = ({
+  formik,
+  name,
+  label,
+  yearsLimit,
+  initialDate,
+  className,
+  placeholder,
+}) => {
   const [day, setDay] = useState();
   const [month, setMonth] = useState();
   const [year, setYear] = useState();
@@ -68,13 +76,15 @@ const Date = ({ formik, name, label, yearsLimit, initialDate, className }) => {
           type="text"
           name={name}
           className="form-control pointer"
-          placeholder={"جهت انتخاب تاریخ کلیک کنید"}
+          placeholder={placeholder || "جهت انتخاب تاریخ کلیک کنید"}
           disabled
         />
-        <span className="input-group-text w_6rem justify-content-center">
-          {" "}
-          {label}{" "}
-        </span>
+
+        {label && (
+          <span className="input-group-text w_6rem justify-content-center">
+            {label}
+          </span>
+        )}
       </div>
       {showConfig ? (
         <div className="datePicker row w-100 m-0 p-0">

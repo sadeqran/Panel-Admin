@@ -28,6 +28,8 @@ import AddUser from "./users/AddUser";
 import PermComponent from "../components/PermComponent";
 import { useHasPermission } from "../hook/permissionsHook";
 import AddDelivery from "./deliveries/AddDelivery";
+import AddCart from "./carts/AddCart";
+import AddOrder from "./orders/AddOrder";
 
 const Content = () => {
   const { showSidebar } = useContext(AdminContext);
@@ -36,6 +38,8 @@ const Content = () => {
   const hasUserPermission = useHasPermission("read_users");
   const hasRolePermission = useHasPermission("read_roles");
   const hasDeliveyPermission = useHasPermission("read_deliveries");
+  const hasCartPermission = useHasPermission("read_carts");
+  const hasOrderPermission = useHasPermission("read_orders");
   return (
     <section
       id="content_section"
@@ -123,8 +127,27 @@ const Content = () => {
           </Route>
         )}
 
-        <Route path="/carts" element={<Carts />} />
-        <Route path="/orders" element={<Orders />} />
+        {hasCartPermission && (
+          <Route path="/carts" element={<Carts />}>
+            <Route
+              path="add-cart"
+              element={
+                <PermComponent component={<AddCart />} pTitle="create_cart" />
+              }
+            />
+          </Route>
+        )}
+
+        {hasOrderPermission && (
+          <Route path="/orders" element={<Orders />}>
+            <Route
+              path="add-order"
+              element={
+                <PermComponent component={<AddOrder />} pTitle="create_order" />
+              }
+            />
+          </Route>
+        )}
 
         {hasDeliveyPermission && (
           <Route path="/deliveries" element={<Deliveries />}>
